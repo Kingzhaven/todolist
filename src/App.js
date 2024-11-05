@@ -1,25 +1,39 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import TodoApp from './TodoApp';
+import Navbar from './Navbar';
+import Login from './Login';
+import SignUp from './SignUp';
+import ProtectedRoute from './ProtectedRoute';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [username, setUsername] = useState('');
+    const navigate = useNavigate();
+
+    const signOut = () => {
+        setUsername('');
+        navigate('/login');
+    };
+
+    return (
+        <div className="App">
+            <Navbar username={username} signOut={signOut} />
+            <Routes>
+                <Route path="/" element={<Login setUsername={setUsername} />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<Login setUsername={setUsername} />} />
+                <Route 
+                    path="/todos" 
+                    element={
+                        <ProtectedRoute isAuthenticated={!!username}>
+                            <TodoApp />
+                        </ProtectedRoute>
+                    } 
+                />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
