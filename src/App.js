@@ -11,6 +11,7 @@ function App() {
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
 
+    // Function to handle user sign-out, clears username and redirects to login page
     const signOut = () => {
         setUsername('');
         navigate('/login');
