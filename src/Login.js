@@ -9,19 +9,24 @@ const Login = ({ setUsername }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
+    // Handle login form submission and check credentials
     const handleLogin = (e) => {
         e.preventDefault();
 
+        // Send login credentials to server for authentication
         axios.post('http://localhost:5000/login', { username: userInput, password })
             .then((response) => {
                 if (response.data.success) {
+                    // On success, set the username in parent component and navigate to the Todo page
                     setUsername(userInput); 
                     navigate('/todos');
                 } else {
+                    // Display error message if login is unsuccessful
                     setErrorMessage(response.data.message);
                 }
             })
             .catch((error) => {
+                // Handle any errors from the server or network issues
                 setErrorMessage('Error during login');
                 console.error('Login error:', error);
             });

@@ -9,7 +9,7 @@ const TodoApp = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [filterCategory, setFilterCategory] = useState('');
 
-// Catagory Filter
+// Filter todos by selected category whenever `filterCategory` changes
     useEffect(() => {
         const categoryQuery = filterCategory ? `?category=${filterCategory}` : '';
         axios.get(`http://localhost:5000/todos${categoryQuery}`)
@@ -17,7 +17,7 @@ const TodoApp = () => {
             .catch(error => console.error('Error fetching todos:', error));
     }, [filterCategory]);
 
-// Add Todo
+// Add Todo item with the selected category and task
     const addTodo = (e) => {
         e.preventDefault();
         if (newTask.trim() && selectedCategory) {
@@ -29,7 +29,7 @@ const TodoApp = () => {
         }
     };
 
-// Delete Todo
+// Delete Todo item by ID
     const deleteTodo = (id) => {
         axios.delete(`http://localhost:5000/todos/${id}`)
             .then(() => setTodos(todos.filter(todo => todo.id !== id)))

@@ -11,7 +11,8 @@ const SignUp = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
-// Check if Password meets minimum requirements
+
+// Check if Password meets minimum security requirements
     const isPasswordValid = (password) => {
         const minLength = 8;
         const hasUpperCase = /[A-Z]/.test(password);
@@ -21,7 +22,7 @@ const SignUp = () => {
 
         return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
     };
-// Checks for check box, password, and matching
+// Validate terms acceptance, password strength, and matching, then submit if valid
     const handleSignUp = async (e) => {
         e.preventDefault();
     
@@ -43,6 +44,7 @@ const SignUp = () => {
         }
     
         try {
+            // Check if username already exists in the database
             const checkResponse = await axios.post('http://localhost:5000/check-username', { username });
     
             if (checkResponse.data.exists) {
@@ -50,6 +52,7 @@ const SignUp = () => {
                 return;
             }
     
+            // Submit the sign-up form data to create a new account
             const response = await axios.post('http://localhost:5000/signup', { username, password });
     
             if (response.data.success) {
